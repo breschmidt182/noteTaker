@@ -1,6 +1,6 @@
 const notes = require('express').Router();
-const {readAndWriteFile, readFromFile} = require('../../db/fsUtils');
-const { v4: uuidv4 } = require('uuid');
+const {readAndWriteFile, readFromFile, getNoteIndex} = require('../../db/fsUtils');
+const randomId = require('uuid');
 
 notes.get('/', (req, res) => {
     readFromFile('./db/db.json')
@@ -8,7 +8,10 @@ notes.get('/', (req, res) => {
         console.log(data);
         res.json(JSON.parse(data))
     })
-    handleNoteView( './db/db.json')
+})
+
+notes.get('/', (req, res) => {
+    getNoteIndex( './db/db.json')
     .then((data) => {
         console.log(data);
         res.json(JSON.parse(data))
@@ -17,6 +20,7 @@ notes.get('/', (req, res) => {
 
 notes.post('/', (req,res) => {
     readAndWriteFile(req.body, './db/db.json')
+    randomId;
     res.send(req.body)
 })
 
