@@ -1,6 +1,6 @@
 const fs = require('fs');
 const util = require('util');
-const readFile = util.promisify(fs.readFile)
+const readFromFile = util.promisify(fs.readFile)
 
 /**
  * Function to push objects into array on database file given content and file path
@@ -13,9 +13,9 @@ const readAndWriteFile = (content, file) => {
         if(err) {
             console.error(err)
         } else {
-            const parsedData = JSON.parse(data)
-            parsedData.push(content);
-            writeToFile(file, parsedData)
+            const parsedInfo = JSON.parse(data)
+            parsedInfo.push(content);
+            writeToFile(file, parsedInfo)
             console.log("content")
         }
     })
@@ -27,9 +27,9 @@ const readAndWriteFile = (content, file) => {
  * @param {number} noteId number pulled from object.id property
  * @return {number} index number of object with matching id property
  */
- const getNoteIndex = (parsedData, noteId) => {
-    for(let i = 0; i<parsedData.length; i++) {
-        if (parsedData[i].id == noteId) {
+ const getNoteIndex = (parsedInfo, noteId) => {
+    for(let i = 0; i<parsedInfo.length; i++) {
+        if (parsedInfo[i].id == noteId) {
             return i
         }
     }}
@@ -45,9 +45,9 @@ const deleteNote = (file, noteId) => {
         if(err) {
             console.error(err) 
         } else {
-            const parsedData = JSON.parse(data)
-            parsedData.splice(getNoteIndex(parsedData, noteId),1)
-            writeToFile(file, parsedData)
+            const parsedInfo = JSON.parse(data)
+            parsedInfo.splice(getNoteIndex(parsedInfo, noteId),1)
+            writeToFile(file, parsedInfo)
         }
     })
 }
@@ -60,4 +60,4 @@ const deleteNote = (file, noteId) => {
 function writeToFile(fileName, content) {
     fs.writeFile(fileName, JSON.stringify(content, null, 2), (err) => err ? console.error(err) : console.info(`\nData written to ${fileName}`))
 }
-module.exports = { readAndWriteFile, readFile, deleteNote }
+module.exports = { readAndWriteFile, readFromFile, deleteNote }
