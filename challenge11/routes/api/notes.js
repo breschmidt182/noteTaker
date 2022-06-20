@@ -1,6 +1,7 @@
 const notes = require('express').Router();
-const {readAndWriteFile, readFromFile, getNoteIndex} = require('../../db/fsUtils');
-const crypto = require('crypto');
+const {readAndWriteFile, readFromFile, getNoteIndex, deleteNote} = require('../../db/fsUtils');
+const { v4: uuidv4 } = require('uuid');
+const db = require('../../db/db.json');
 notes.get('/', (req, res) => {
     readFromFile('./db/db.json')
     .then((data) => {
@@ -18,13 +19,16 @@ notes.get('/', (req, res) => {
 })
 
 notes.post('/', (req,res) => {
+    req.body.id = uuidv4();
+    console.log(req.body);
     readAndWriteFile(req.body, './db/db.json')
-    console.log(crypto.randomUUID());
     res.send(req.body)
 })
 
-notes.delete('/', (req, res) => {
-    deleteNote(req.body, '1')
+notes.delete('/:id', (req, res) => {
+    console.log(req.params)
+    deleteNote('./db/db.json', req.params.id)
+    res.send(req.body)
 })
 
 module.exports = notes
