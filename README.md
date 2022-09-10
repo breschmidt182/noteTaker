@@ -29,6 +29,8 @@ https://dashboard.heroku.com/apps/note-taker-schmidty
 https://github.com/breschmidt182/noteTaker
 
 # Notes
+Had to add public folder outside of challenge11 folder so screenshot could be seen. 
+
 Tutor provided me with the readAndWrite method.
 
 The application should have a db.json file on the back end that will be used to store and retrieve notes using the fs module.
